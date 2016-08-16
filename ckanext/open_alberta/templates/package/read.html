@@ -27,18 +27,19 @@
             </h1>
             #}
         </div>
-        {% if pkg.archive_date|length > 0 or pkg.archivedate|length > 0  %}
-          <div class="col-sm-12">
-              <h3 class="archived-item"><i class="fa fa-archive"></i> Archived</h3>
-		<div class="archived-item-explanation">This item has been replaced by a more recent resource or the content may be otherwise out of date. It is provided for informational and research purposes.</div>
-          </div>
-          {% endif %}
-            {% if pkg.replacedby_title and pkg.replacedby_uri %}
-                <div class="col-sm-12">
-                    <h4 class="replaced-by">Replaced by: <a href="{{pkg.replacedby_uri}}">{{pkg.replacedby_title}}</a></h4>
-                </div>
-            {% endif %}
-           <div class="col-sm-12">
+        {% set archive_dt = pkg.archive_date or pkg.archivedate %}
+        {% if archive_dt|length and not h.is_future_date(archive_dt)  %}
+        <div class="col-sm-12">
+            <h3 class="archived-item"><i class="fa fa-archive"></i> Archived</h3>
+            <div class="archived-item-explanation">This item has been replaced by a more recent resource or the content may be otherwise out of date. It is provided for informational and research purposes.</div>
+        </div>
+        {% endif %}
+        {% if pkg.replacedby_title and pkg.replacedby_uri %}
+        <div class="col-sm-12">
+            <h4 class="replaced-by">Replaced by: <a href="{{pkg.replacedby_uri}}">{{pkg.replacedby_title}}</a></h4>
+        </div>
+        {% endif %}
+        <div class="col-sm-12">
             <ul class="nav nav-tabs resource-tabs">
                 <li role="presentation" class="active" data-tab-group="data-results" data-tab-name="tab-summary"><a href="#summary">Summary</a></li>
                 <li role="presentation" data-tab-group="data-results" data-tab-name="tab-detailed"><a href="#detailed">Detailed Information</a></li>

@@ -126,5 +126,6 @@ class RssFeedsWidget(plugins.SingletonPlugin):
     def get_helpers(self):
         return {
             'rss_fetch_feed': helpers.fetch_feed,
+            'is_future_date': helpers.is_future_date,
         }
 
