@@ -3,10 +3,13 @@ import urlparse
 import requests
 import ckan.logic as logic
 import ckan.lib.base as base
+import ckan.model as model
 
 from ckan.common import _, request, c
 import ckan.lib.helpers as h
 import ckan.logic as logic
+import ckan.plugins as plugins
+import ckan.plugins.toolkit as tk
 import ckan.logic.schema as schema
 import ckan.lib.navl.dictization_functions as dictization_functions
 import ckan.lib.mailer as mailer
@@ -172,3 +175,26 @@ class DashboardPackagesController(UserController):
         UserController.__before__(self, action, **env)
         c.display_private_only = True
 
+
+from ckan.lib.activity_streams import activity_stream_string_functions, activity_stream_string_icons
+
+activity_stream_string_functions['package reviewed'] = lambda(ctx,activity): tk._("{dataset} has been reviewed")
+activity_stream_string_functions['review package'] = lambda(ctx,activity): tk._("{dataset} is due for review")
+activity_stream_string_icons['review package'] = 'calendar'
+
+
+class MonkeyController(base.BaseController):
+    def foo(self, id):
+        logger = getLogger(__name__)
+        ctx = {'user': c.user }
+        data = { 'id': id }
+        pkg = tk.get_action('package_show')(ctx, data)
+        if pkg is None:
+            plugins.abort(404, 'No such DS')
+        objid = pkg['id']
+        from ckan.model import Activity, ActivityDetail
+        a = Activity(user_id=c.userobj.id, object_id=objid, revision_id=pkg['revision_id'],
+                     activity_type='package needs review', data={'package': pkg})
+        a.save()
+
+        return "ok"

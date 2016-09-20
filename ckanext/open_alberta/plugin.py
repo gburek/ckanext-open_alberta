@@ -37,10 +37,6 @@ class OpenAlbertaPagesPlugin(plugins.SingletonPlugin):
                     controller='ckanext.open_alberta.controller:PagesController',
                     action='licence')
 
-        m.connect('private-packages' ,'/dashboard/datasets/private',
-                  controller='ckanext.open_alberta.controller:DashboardPackagesController',
-                  action='dashboard_datasets')
-
 # /content/government-alberta-open-information-and-open-data-policy > /policy
         m.redirect('/content/government-alberta-open-information-and-open-data-policy', 
                    '/policy',
@@ -76,7 +72,9 @@ class OpenAlbertaPagesPlugin(plugins.SingletonPlugin):
 
         return m
 
+
 class Open_AlbertaPlugin(plugins.SingletonPlugin):
+    plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers)
 
@@ -87,6 +85,16 @@ class Open_AlbertaPlugin(plugins.SingletonPlugin):
 
     def get_helpers(self):
         return {'open_alberta_latest_datasets': latest_datasets}
+
+    def before_map(self, m):
+        m.connect('private-packages' ,'/dashboard/datasets/private',
+                  controller='ckanext.open_alberta.controller:DashboardPackagesController',
+                  action='dashboard_datasets')
+        m.connect('foo' ,'/foo/{id}',
+                  controller='ckanext.open_alberta.controller:MonkeyController',
+                  action='foo')
+        return m
+
 
 class DateSearchPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
