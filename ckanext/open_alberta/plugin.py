@@ -137,6 +137,8 @@ class Open_AlbertaPlugin(plugins.SingletonPlugin, DefaultGroupForm):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IGroupForm)
+    plugins.implements(plugins.IPackageController, inherit=True)
+
 
     """
     Monkey patch the ckan authz. Change the default behavior
@@ -219,6 +221,27 @@ class Open_AlbertaPlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def index_template(self):
         return 'group/topics.html'
+
+    # IPackageController
+    def after_update(self, ctx, pkg):
+        """ Update group membership of the dataset that was just saved based on the value of topics field """
+
+        del_action = toolkit.get_action('member_delete')
+        add_action = toolkit.get_action('member_create')
+        all_topics = toolkit.get_action('group_list')(ctx, {'type':'topics', 'all_fields': True})
+        import json
+        topics = json.loads(pkg['topics'])
+
+        for grp in all_topics:
+            grp = grp['name']
+            if grp in topics:
+                add_action(ctx, {'id': grp, 
+                                 'object': pkg['id'], 
+                                 'object_type': 'package',
+                                 'capacity': 'public'})
+            else:
+                del_action(ctx, {'id': grp, 'object': pkg['id'], 'object_type': 'package'})
+
 
 
     import ckan.controllers.package
