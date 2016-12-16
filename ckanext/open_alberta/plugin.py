@@ -228,6 +228,8 @@ class Open_AlbertaPlugin(plugins.SingletonPlugin, DefaultGroupForm):
     def after_update(self, ctx, pkg):
         """ Update group membership of the dataset that was just saved based on the value of topics field """
 
+        if 'topics' not in pkg:
+            return
         del_action = toolkit.get_action('member_delete')
         add_action = toolkit.get_action('member_create')
         all_topics = toolkit.get_action('group_list')(ctx, {'type':'topics', 'all_fields': True})
