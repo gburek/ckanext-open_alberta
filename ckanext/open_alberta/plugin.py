@@ -11,6 +11,7 @@ import api
 import ckan.controllers.api as ckan_api
 from ckan.common import _
 from ckan.lib.plugins import DefaultGroupForm
+import json
 
 @toolkit.side_effect_free
 def counter_on_off(context, data_dict=None):
@@ -230,7 +231,6 @@ class Open_AlbertaPlugin(plugins.SingletonPlugin, DefaultGroupForm):
         del_action = toolkit.get_action('member_delete')
         add_action = toolkit.get_action('member_create')
         all_topics = toolkit.get_action('group_list')(ctx, {'type':'topics', 'all_fields': True})
-        import json
         topics = json.loads(pkg['topics'])
 
         for grp in all_topics:
