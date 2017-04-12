@@ -89,6 +89,147 @@ $active-bg-color: #005072;
         padding: 0 15px;
     }
 
+    .page-header {
+        margin: 0;
+        border: none;
+    }
+
+    .content_action {
+        padding-bottom: 10px;
+    }
+
+    .btn.btn-sm {
+        padding: 5px 10px;
+        font-size: 13px;
+        line-height: 13px;
+        min-height: auto;
+    }
+
+    .btn.btn-mini {
+        padding: 5px;
+        font-size: 13px;
+        line-height: 13px;
+        min-height: auto;
+    }
+
+    .btn.btn-danger {
+        background-image: linear-gradient(#c00 0%, #600 100%);
+
+        &:hover {
+            background-image: linear-gradient(#800 0%, #400 100%);
+        }
+    }
+
+    input[type=text], input[type=password], textarea, select {
+        padding: 5px 10px;
+        border: solid 2px #d1d4d3;
+
+        &:hover, &.active, &:focus {
+            border-color: #0080a4;
+            box-shadow: 0 0 3px #0080a4;
+        }
+    }
+
+    select, option {
+        padding: 3px 5px;
+    }
+
+    select[multiple] {
+        padding: 0;
+    }
+
+    .form-horizontal .checkbox {
+        /* clear bootstrap styling */
+        padding: 0;
+    }
+
+    label {
+        position: relative;
+
+        input[type=checkbox] {
+            margin-right: 10px;
+            opacity: 0;
+            /* clear bootstrap styling */
+            position: relative;
+            margin-left: auto;
+        }
+
+        input[type=checkbox] + span {
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          &:before {
+            font: normal normal normal 16px/1 FontAwesome;
+            content: "_";
+            color: transparent;
+            width: 20px;
+            height: 20px;
+            background: white;
+            display: inline-block;
+            border: solid 2px #d1d4d3;
+            border-radius: 5px;
+          }
+        }
+
+        input[type=checkbox]:hover + span:before, input[type=checkbox]:focus + span:before {
+            border-color: #0080a4;
+            box-shadow: 0 0 3px #0080a4;
+        }
+
+        input[type=checkbox]:checked + span:before {
+            font: normal normal normal 16px/1 FontAwesome;
+            content: "\f00c";
+            color: #777;
+        }
+    }
+
+    .form-group.error {
+        label {
+            color: #C00;
+        }
+
+        input, textarea, select {
+            border-color: #c00;
+            margin-right: 5px;
+
+            &:hover, &:focus, &.active {
+                box-shadow: 0 0 3px #c00;
+            }
+        }
+
+        .error-block {
+            color: #a94442;
+        }
+    }
+
+    form .error-explanation {
+        border: solid #f00 1px;
+        color: #a00;
+        background: #f2dbd7;
+
+        p:first-child {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    }
+
+    .info-block {
+        padding-top: 5px;
+        padding-left: 20px;
+        font-size: 0.9em;
+        color: #666;
+        position: relative;
+
+        i {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            font-size: 1.2em;
+        }
+    }
+
     #content.package-read {
         .page-header {
             margin: 0;
@@ -629,7 +770,21 @@ $active-bg-color: #005072;
     }
 
     .nav-tabs {
-        padding-left:20px;
+        padding-left:0;
+        border-bottom: 2px solid #d1d4d3;
+        margin-bottom: 10px;
+
+        li { 
+            margin-bottom: -2px; 
+
+            a:hover {
+                background: #d1d4d3;
+            }
+        }
+        li.active a {
+            border: 2px solid #d1d4d3;
+            border-bottom: 0;
+        }
     }
 
     #show-filters {
@@ -690,7 +845,7 @@ $active-bg-color: #005072;
     }
 
     .control-medium {
-        input, textarea, select {
+        input:not([type=checkbox]), textarea, select {
             min-width: 320px;
         }
     }
@@ -730,6 +885,8 @@ $active-bg-color: #005072;
     .search button {
         border-radius: 0;
     }
+
+
 
     .dataset-list { 
         padding: 0;
@@ -873,9 +1030,10 @@ $active-bg-color: #005072;
         }
 
         .links {
-            float: right;
+            margin-left: 35px;
+            margin-top: 8px;
+
             a {
-                margin-left: 10px;
                 text-transform: uppercase;
             }
 
